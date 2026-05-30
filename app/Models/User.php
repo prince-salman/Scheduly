@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'status',
+        'reason'
     ];
 
     /**
@@ -45,5 +48,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin()
+    {
+    return $this->role === 'admin';
+    }
+
+    public function isRejected(): bool
+{
+    return $this->status === 'rejected';
+}
+
+  public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

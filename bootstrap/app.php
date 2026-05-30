@@ -11,10 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // register alias untuk middleware custom kita
         $middleware->alias([
-            'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
-        ]);
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'update.last.login'=> \App\Http\Middleware\UpdateLastLogin::class,
+    ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

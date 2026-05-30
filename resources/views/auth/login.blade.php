@@ -313,7 +313,7 @@
                     value="{{ old('email') }}"
                     placeholder="kamu@perusahaan.com"
                     class="{{ $errors->has('email') ? 'is-error' : '' }}"
-                    autocomplete="email"
+                    autocomplete="off"
                     required
                 >
                 @error('email')
@@ -330,7 +330,7 @@
                         name="password"
                         placeholder="••••••••"
                         class="{{ $errors->has('password') ? 'is-error' : '' }}"
-                        autocomplete="current-password"
+                        autocomplete="off"
                         required
                     >
                     <!-- show/hide toggle -->

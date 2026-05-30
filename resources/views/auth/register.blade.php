@@ -486,6 +486,17 @@
                     @enderror
                 </div>
 
+                <div class="form-group">
+                <label for="password_confirmation">Confirm Password</label>
+                <input
+                    type="password"
+                    id="password_confirmation"
+                    name="password_confirmation"
+                    placeholder="Ulangi password"
+                    autocomplete="new-password"
+                >
+            </div>
+
                 <button type="submit" class="btn-primary-full">
                     Register Now →
                 </button>

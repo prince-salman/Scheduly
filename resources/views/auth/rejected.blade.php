@@ -269,9 +269,13 @@
 
         <!-- Actions -->
         <div class="action-group">
-            <a href="{{ route('register') }}" class="btn-re-register">
-                Daftar Ulang →
-            </a>
+          <form action="{{ route('logout') }}" method="POST" style="width:100%;">
+    @csrf
+
+    <button type="submit" class="btn-re-register">
+        Daftar Ulang →
+    </button>
+</form>
             <p class="support-link">
                 Ada pertanyaan? <a href="#">Hubungi Support</a>
             </p>

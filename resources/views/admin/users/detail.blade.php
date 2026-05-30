@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Detail Pengguna')
+@section('title', 'Detail Pengguna - ' . $user->name)
 
 @push('styles')
 <style>
@@ -446,15 +446,25 @@
 
 {{-- ── Profile card ── --}}
 <div class="profile-card">
-    {{-- If user has a profile picture we'd show <img>, otherwise fallback to initials --}}
-    <div class="profile-avatar-lg">JD</div>
+    {{-- fallback menggunakan inisial nama jika foto kosong --}}
+    <div class="profile-avatar-lg">
+        {{ strtoupper(substr($user->name, 0, 2)) }}
+    </div>
 
     <div class="profile-meta">
-        <div class="full-name">John Doe</div>
-        <div class="email-addr">john.doe@company.com</div>
-        {{-- status chip — swap class based on actual status --}}
-        <div class="status-chip-lg chip-pending">Pending</div>
-        <div class="member-since">Member sejak 22 Mei 2024</div>
+        <div class="full-name">{{ $user->name }}</div>
+        <div class="email-addr">{{ $user->email }}</div>
+        
+        {{-- status chip dinamis sesuai status model --}}
+        @if($user->status === 'active')
+            <div class="status-chip-lg chip-active">Active</div>
+        @elseif($user->status === 'pending')
+            <div class="status-chip-lg chip-pending">Pending</div>
+        @elseif($user->status === 'rejected')
+            <div class="status-chip-lg chip-ditolak">Ditolak</div>
+        @endif
+
+        <div class="member-since">Member sejak {{ $user->created_at->translatedFormat('d F Y') }}</div>
     </div>
 </div>
 
@@ -470,28 +480,26 @@
         <div class="info-rows">
             <div class="info-row">
                 <span class="info-row-label">Nama Lengkap</span>
-                <span class="info-row-value">John Doe</span>
+                <span class="info-row-value">{{ $user->name }}</span>
             </div>
             <div class="info-row">
                 <span class="info-row-label">Email</span>
-                <span class="info-row-value">john.doe@company.com</span>
-            </div>
-            <div class="info-row">
-                <span class="info-row-label">Telepon</span>
-                <span class="info-row-value">+62 812-3456-7890</span>
+                <span class="info-row-value">{{ $user->email }}</span>
             </div>
             <div class="info-row">
                 <span class="info-row-label">Role</span>
-                <span class="info-row-value">Member</span>
+                <span class="info-row-value" style="text-transform: capitalize;">{{ $user->role ?? 'Member' }}</span>
             </div>
             <div class="info-row">
                 <span class="info-row-label">Bergabung</span>
-                <span class="info-row-value">22 Mei 2024</span>
+                <span class="info-row-value">{{ $user->created_at->translatedFormat('d F Y') }}</span>
             </div>
+            @if($user->isRejected())
             <div class="info-row">
-                <span class="info-row-label">Terakhir Aktif</span>
-                <span class="info-row-value">—</span>
+                <span class="info-row-label" style="color: #ba1a1a;">Alasan Penolakan</span>
+                <span class="info-row-value" style="color: #ba1a1a;">{{ $user->reason }}</span>
             </div>
+            @endif
         </div>
     </div>
 
@@ -503,15 +511,16 @@
         </div>
         <div class="activity-stats">
             <div class="activity-stat-item">
-                <div class="val">0</div>
+                <div class="val">{{ $user->tasks->count() }}</div>
                 <div class="lbl">Tasks Dibuat</div>
             </div>
             <div class="activity-stat-item">
-                <div class="val">0</div>
+                <div class="val">{{ $user->tasks->where('status', 'done')->count() }}</div>
                 <div class="lbl">Tasks Selesai</div>
             </div>
             <div class="activity-stat-item">
-                <div class="val">0 jam</div>
+                {{-- Menghitung total jam fokus dari akumulasi focus_minutes di database --}}
+                <div class="val">{{ round($user->tasks->sum('focus_minutes') / 60, 1) }} jam</div>
                 <div class="lbl">Jam Fokus</div>
             </div>
             <div class="activity-stat-item">
@@ -523,42 +532,41 @@
 
 </div>
 
-{{-- ── Pending Approval Actions (only visible when status = pending) ── --}}
-{{-- In a real app you'd use @if($user->status === 'pending') --}}
+{{-- ── Pending Approval Actions (Hanya muncul jika status akun pending) ── --}}
+@if($user->status === 'pending')
 <div class="approval-action-card">
     <div class="aa-title">
-        <i data-lucide="hourglass" class="icon-lg text-primary"></i> Akun Menunggu Persetujuan
+         Akun Menunggu Persetujuan
     </div>
     <p class="aa-sub">Tinjau informasi pengguna di atas, pilih role yang sesuai, lalu setujui atau tolak akun ini.</p>
 
     <div class="role-row">
         <label class="form-label">Pilih Role</label>
-        <select class="role-select" id="roleSelect">
-            <option value="">-- Pilih Role --</option>
-            <option value="admin">Admin</option>
+        <select class="role-select" id="roleSelect" onchange="syncRole()">
             <option value="member">User / Member</option>
+            <option value="admin">Admin</option>
             <option value="viewer">Viewer</option>
         </select>
     </div>
 
     <div class="approval-btns">
-        <form action="{{ route('admin.users.approve', 1) }}" method="POST" style="margin:0">
+        <form action="{{ route('admin.users.approve', $user->id) }}" method="POST" style="margin:0">
             @csrf
             @method('PATCH')
-            <input type="hidden" name="role" id="roleInputHidden" value="">
-            <button type="submit" class="btn-approve-lg" onclick="syncRole()">
-                <i data-lucide="check-circle" class="icon-sm"></i> Setujui Akun
+            <input type="hidden" name="role" id="roleInputHidden" value="member">
+            <button type="submit" class="btn-approve-lg">
+                Setujui Akun
             </button>
         </form>
 
         <button class="btn-reject-lg" id="toggleRejectBtn" onclick="toggleRejectForm()">
-            <i data-lucide="x-circle" class="icon-sm"></i> Tolak Pengajuan
+            Tolak Pengajuan
         </button>
     </div>
 
-    {{-- Rejection reason — shown when Tolak is clicked --}}
+    {{-- Rejection reason form --}}
     <div class="rejection-form" id="rejectionForm">
-        <form action="{{ route('admin.users.reject', 1) }}" method="POST">
+        <form action="{{ route('admin.users.reject', $user->id) }}" method="POST">
             @csrf
             @method('PATCH')
             <label class="form-label" style="color:#ba1a1a">Alasan Penolakan</label>
@@ -570,15 +578,14 @@
             ></textarea>
             <div>
                 <button type="submit" class="rejection-submit">Kirim & Tolak Akun</button>
-                <button type="button"
-                    onclick="toggleRejectForm()"
-                    style="font-size:13px;font-weight:600;color:#797582;background:none;border:none;cursor:pointer;padding:10px 16px;font-family:inherit">
+                <button type="button" onclick="toggleRejectForm()" style="font-size:13px;font-weight:600;color:#797582;background:none;border:none;cursor:pointer;padding:10px 16px;font-family:inherit">
                     Batal
                 </button>
             </div>
         </form>
     </div>
 </div>
+@endif
 
 {{-- ── Recent Tasks by this user ── --}}
 <div class="tasks-section">
@@ -597,42 +604,38 @@
             </tr>
         </thead>
         <tbody>
-            {{-- In production this would be @foreach($tasks as $task) ... @endforeach --}}
+            {{-- Mengambil 5 task terbaru milik user secara real --}}
+            @forelse($user->tasks()->latest()->take(5)->get() as $task)
             <tr>
-                <td class="task-name-cell">Finalize Q2 Report</td>
-                <td>Work &amp; Projects</td>
-                <td><span class="task-priority prio-high">High</span></td>
-                <td><span class="task-status-chip ts-inprogress">In Progress</span></td>
-                <td>25 Mei 2024</td>
+                <td class="task-name-cell">{{ $task->title }}</td>
+                <td>{{ $task->category ?? 'General' }}</td>
+                <td>
+                    @if($task->priority === 'high')
+                        <span class="task-priority prio-high">High</span>
+                    @elseif($task->priority === 'medium')
+                        <span class="task-priority prio-medium">Medium</span>
+                    @else
+                        <span class="task-priority prio-low">Low</span>
+                    @endif
+                </td>
+                <td>
+                    @if($task->status === 'done')
+                        <span class="task-status-chip ts-done">Selesai</span>
+                    @elseif($task->status === 'in_progress')
+                        <span class="task-status-chip ts-inprogress">In Progress</span>
+                    @else
+                        <span class="task-status-chip ts-todo">To Do</span>
+                    @endif
+                </td>
+                <td>{{ $task->due_date ? $task->due_date->translatedFormat('d M Y') : '—' }}</td>
             </tr>
+            @empty
             <tr>
-                <td class="task-name-cell">Team standup meeting prep</td>
-                <td>Team Meetings</td>
-                <td><span class="task-priority prio-medium">Medium</span></td>
-                <td><span class="task-status-chip ts-done">Selesai</span></td>
-                <td>20 Mei 2024</td>
+                <td colspan="5" style="text-align: center; color: #797582; padding: 20px;">
+                    Belum ada task yang dibuat oleh pengguna ini.
+                </td>
             </tr>
-            <tr>
-                <td class="task-name-cell">Update onboarding docs</td>
-                <td>Work &amp; Projects</td>
-                <td><span class="task-priority prio-low">Low</span></td>
-                <td><span class="task-status-chip ts-todo">To Do</span></td>
-                <td>30 Mei 2024</td>
-            </tr>
-            <tr>
-                <td class="task-name-cell">Review design mockups</td>
-                <td>Work &amp; Projects</td>
-                <td><span class="task-priority prio-medium">Medium</span></td>
-                <td><span class="task-status-chip ts-done">Selesai</span></td>
-                <td>18 Mei 2024</td>
-            </tr>
-            <tr>
-                <td class="task-name-cell">Personal goal — read 2 books</td>
-                <td>Personal Goals</td>
-                <td><span class="task-priority prio-low">Low</span></td>
-                <td><span class="task-status-chip ts-inprogress">In Progress</span></td>
-                <td>31 Mei 2024</td>
-            </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
@@ -650,5 +653,10 @@ function syncRole() {
     const roleVal = document.getElementById('roleSelect').value;
     document.getElementById('roleInputHidden').value = roleVal;
 }
+
+// Set value default saat halaman dimuat pertama kali
+document.addEventListener('DOMContentLoaded', function() {
+    syncRole();
+});
 </script>
 @endpush
