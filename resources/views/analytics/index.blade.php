@@ -63,13 +63,13 @@
     <h1>📊 Analytics & Laporan</h1>
     <div class="export-actions">
         <button class="btn-ghost">
-           <a href="{{ route('tasks.export.pdf') }}" class="fab-new-task">
+               <a href="{{ route('tasks.export.pdf') }}" class="fab-new-task">
     📄 Export PDF
 </a>
         </button>
         <button class="btn-ghost">
             <a href="{{ route('tasks.export.csv') }}" class="fab-new-task">
-    📄 Export CSV
+    📄 Export Excel
 </a>
         </button>
     </div>
@@ -211,40 +211,64 @@ Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
 Chart.defaults.color = '#797582';
 const gridColor = 'rgba(202,196,211,.25)';
 
-// productivity bar chart
+// ── Produktivitas Harian (jumlah task done per hari) ──────────────────
+const prodData  = @json($productivityChart->pluck('value'));   // integer: jumlah task done
+const prodMax   = Math.max(...prodData, 1);                    // dynamic max agar bar proporsional
+
+
 const prodCtx = document.getElementById('productivityChart').getContext('2d');
 new Chart(prodCtx, {
     type: 'bar',
     data: {
         labels: @json($productivityChart->pluck('label')),
         datasets: [{
-            label: 'Produktivitas (%)',
-            data:  @json($productivityChart->pluck('value')),
-            backgroundColor: @json($productivityChart->pluck('value')->map(fn($v) => $v >= 75 ? '#6351a7' : '#ede9ff')),
+            label: 'Task Selesai',
+            data: prodData,
+            // bar lebih gelap jika >= 75% dari nilai tertinggi hari itu
+            backgroundColor: prodData.map(v => v >= prodMax * 0.75 ? '#6351a7' : '#ede9ff'),
+            hoverBackgroundColor: '#5240a0',
             borderRadius: 8,
             borderSkipped: false,
-            hoverBackgroundColor: '#5240a0',
         }]
     },
     options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y}%` } } },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: ctx => ` ${ctx.parsed.y} task selesai`
+                }
+            }
+        },
         scales: {
-            y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { callback: v => v + '%', stepSize: 25 } },
+            y: {
+                beginAtZero: true,
+                max: prodMax + 1,                          // sedikit padding di atas bar tertinggi
+                grid: { color: gridColor },
+                ticks: {
+                    stepSize: 1,                           // integer saja, tidak ada 0.5
+                    callback: v => Number.isInteger(v) ? v : null
+                }
+            },
             x: { grid: { display: false } }
         }
     }
 });
 
-// focus line chart
+// ── Menit Fokus per Hari ──────────────────────────────────────────────
+const focusData = @json($focusChart->pluck('value'));          // integer: total focus_minutes per hari
+const focusMax  = Math.max(...focusData, 30);                  // minimum axis 30 menit
+
 const focusCtx = document.getElementById('focusChart').getContext('2d');
 new Chart(focusCtx, {
     type: 'line',
     data: {
         labels: @json($focusChart->pluck('label')),
         datasets: [{
-            label: 'Jam Fokus',
-            data:  @json($focusChart->pluck('value')),
+            label: 'Menit Fokus',
+            data: focusData,
             borderColor: '#006a61',
             backgroundColor: 'rgba(0,106,97,.08)',
             borderWidth: 2.5,
@@ -257,13 +281,30 @@ new Chart(focusCtx, {
         }]
     },
     options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y} Jam` } } },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: ctx => ` ${ctx.parsed.y} menit`
+                }
+            }
+        },
         scales: {
-            y: { beginAtZero: true, max: 8, grid: { color: gridColor }, ticks: { callback: v => v + 'j', stepSize: 2 } },
+            y: {
+                beginAtZero: true,
+                suggestedMax: focusMax + 10,
+                grid: { color: gridColor },
+                ticks: {
+                    callback: v => v + ' mnt',
+                    maxTicksLimit: 6
+                }
+            },
             x: { grid: { display: false } }
         }
     }
 });
+
 </script>
 @endpush

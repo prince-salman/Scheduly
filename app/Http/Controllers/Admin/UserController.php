@@ -244,17 +244,34 @@ class UserController extends Controller
 
     // ── Admin: toggle active / deactivate ─────────────────────────
 
-    public function toggleStatus(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+  public function toggleStatus(Request $request, $id)
+{
+    $user = User::findOrFail($id);
 
-        $newStatus = $user->status === 'approved' ? 'rejected' : 'approved';
-        $user->update(['status' => $newStatus]);
+    if ($user->status === 'approved') {
+        $request->validate([
+            'reason' => 'required|string|max:1000',
+        ]);
 
-        $msg = $newStatus === 'approved'
-            ? "Akun {$user->name} diaktifkan kembali."
-            : "Akun {$user->name} dinonaktifkan.";
+        $user->update([
+            'status' => 'rejected',
+            'reason' => $request->reason,
+        ]);
 
-        return back()->with('success', $msg);
+        // Force logout user: hapus semua session milik user ini
+        \Illuminate\Support\Facades\DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->delete();
+
+        $msg = "Akun {$user->name} dinonaktifkan.";
+    } else {
+        $user->update([
+            'status' => 'approved',
+            'reason' => null,
+        ]);
+        $msg = "Akun {$user->name} diaktifkan kembali.";
     }
+
+    return back()->with('success', $msg);
+}
 }

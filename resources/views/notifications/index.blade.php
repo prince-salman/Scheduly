@@ -3,6 +3,133 @@
 
 @push('styles')
 <style>
+.custom-pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin-top:24px;
+}
+
+.page-btn{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+
+    background:#fff;
+    color:#797582;
+
+    border:1px solid #eee;
+    transition:.2s;
+}
+
+.page-btn:hover{
+    background:#f3eeff;
+    color:#6351a7;
+    border-color:#d9ccff;
+}
+
+.page-btn.active{
+    background:#6351a7;
+    color:#fff;
+    border-color:#6351a7;
+    box-shadow:0 8px 18px rgba(99,81,167,.25);
+}
+
+.page-btn.disabled{
+    opacity:.4;
+    pointer-events:none;
+}
+
+.page-dots{
+    color:#999;
+    font-weight:600;
+}
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.pagination nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pagination > div:first-child {
+    display: none;
+}
+
+.pagination .relative.z-0 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #f0eaf8;
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 8px 20px rgba(181,162,255,.12);
+}
+
+.pagination a,
+.pagination span {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    text-decoration: none;
+
+    color: #797582;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: all .2s ease;
+}
+
+.pagination a:hover {
+    background: #f3eeff;
+    color: #6351a7;
+}
+
+.pagination [aria-current="page"] span {
+    background: #6351a7 !important;
+    color: #fff !important;
+    box-shadow: 0 6px 14px rgba(99,81,167,.25);
+}
+
+.pagination .cursor-not-allowed {
+    opacity: .4;
+}
+
+@media (max-width:640px) {
+    .pagination .relative.z-0 {
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .pagination a,
+    .pagination span {
+        min-width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+}
+    
     .notif-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
     .notif-header h1 { font-size:22px; font-weight:800; color:#1c1b20; }
     .btn-mark-all { padding:9px 18px; border-radius:12px; border:1.5px solid #cac4d3; background:none; font-family:inherit; font-size:13px; font-weight:600; color:#6351a7; cursor:pointer; transition:background .15s,border-color .15s; }
@@ -114,8 +241,9 @@
 
 {{-- pagination --}}
 @if($notifications->hasPages())
-<div style="margin-top:16px;display:flex;justify-content:flex-end">
-    {{ $notifications->withQueryString()->links() }}
+<div class="pagination-wrapper">
+    <div class="pagination">
+        {{ $notifications->withQueryString()->onEachSide(1)->links('vendor.pagination.custom') }}
 </div>
 @endif
 

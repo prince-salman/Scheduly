@@ -15,7 +15,7 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 
     {{-- Chart.js (needed by analytics & admin dashboard) --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -343,10 +343,22 @@
 </div>
 
 <script>
-    // Initialise Lucide icons after DOM is ready
     document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
 </script>
-
-@stack('scripts')
+ 
+@stack('scripts')  
 </body>
 </html>
+ 
+
+
+
+
+
+
+
+
+
+
+
+

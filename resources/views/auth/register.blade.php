@@ -433,7 +433,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('register.store') }}" method="POST" novalidate>
+            <form action="{{ route('register') }}" method="POST" novalidate>
                 @csrf
 
                 <div class="form-group">

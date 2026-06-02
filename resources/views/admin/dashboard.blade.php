@@ -260,7 +260,7 @@
             <div class="approval-actions">
                 <form action="{{ route('admin.users.approve', $u->id) }}" method="POST">
                     @csrf @method('PATCH')
-                    <input type="hidden" name="role" value="member">
+                    <input type="hidden" name="role" value="admin">
                     <button type="submit" class="btn-approve">Setujui</button>
                 </form>
                 <button class="btn-reject" onclick="openRejectModal({{ $u->id }}, '{{ $u->name }}')">Tolak</button>

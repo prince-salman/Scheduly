@@ -3,6 +3,39 @@
 
 @push('styles')
 <style>
+
+    .dashboard-topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:28px;
+}
+
+.logout-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 18px;
+    border:none;
+    border-radius:14px;
+    background:#ba1a1a;
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 8px 20px rgba(186,26,26,.18);
+}
+
+.logout-btn:hover{
+    background:#981414;
+    transform:translateY(-1px);
+}
+
+.logout-form{
+    margin:0;
+}
     .dashboard-greeting { margin-bottom:28px; }
     .dashboard-greeting h1 { font-size:24px; font-weight:800; color:#1c1b20; margin-bottom:4px; }
     .dashboard-greeting p  { font-size:14px; color:#797582; }
@@ -97,9 +130,25 @@
     $focusPct = min(100, round(($focusToday / $focusGoal) * 100));
 @endphp
 
-<div class="dashboard-greeting">
-    <h1>Selamat {{ $greeting }}, {{ explode(' ', auth()->user()->name)[0] }}! 👋</h1>
-    <p>{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }} · Berikut ringkasan produktivitas kamu hari ini.</p>
+<div class="dashboard-topbar">
+
+    <div class="dashboard-greeting">
+        <h1>Selamat {{ $greeting }}, {{ explode(' ', auth()->user()->name)[0] }}! 👋</h1>
+        <p>
+            {{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+            · Berikut ringkasan produktivitas kamu hari ini.
+        </p>
+    </div>
+
+    <form method="POST"
+          action="{{ route('logout') }}"
+          class="logout-form">
+        @csrf
+        <button type="submit" class="logout-btn">
+            🚪 Logout
+        </button>
+    </form>
+
 </div>
 
 {{-- Stat cards --}}

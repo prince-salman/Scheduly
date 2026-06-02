@@ -11,6 +11,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
+
         $totalUsers = User::count();
 
         $lastWeekUsers = User::where(
@@ -37,15 +38,17 @@ class AdminDashboardController extends Controller
 
         $reportedCount = 3;
 
-        $activityData = collect(range(13, 0))->map(function ($daysAgo) {
-            $date = now()->subDays($daysAgo)->toDateString();
+     $activityData = collect(range(30, 0))->map(function ($daysAgo) {
 
-            return [
-                'label' => now()->subDays($daysAgo)->format('M d'),
-                'value' => User::whereDate('last_login_at', $date)->count(),
-            ];
-        });
+    $date = now()->subDays($daysAgo)->toDateString();
 
+    return [
+        'label' => now()->subDays($daysAgo)->format('M d'),
+        'value' => Task::where('status', 'done')
+            ->whereDate('updated_at', $date)
+            ->count(),
+    ];
+});
         $taskDistribution = Task::select(
                 'category',
                 DB::raw('count(*) as total')

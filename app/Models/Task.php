@@ -98,4 +98,9 @@ class Task extends Model
         if (!$this->subtask_count) return $this->status === 'done' ? 100 : 0;
         return (int) round(($this->done_subtask_count / $this->subtask_count) * 100);
     }
+
+    public function timerSessions(): HasMany {
+    return $this->hasMany(TimerSession::class);
+    }
+
 }
