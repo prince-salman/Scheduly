@@ -1,6 +1,7 @@
 {
     "version": 2,
-    "alias": ["scheduly-id.vercel.app"],
+    "regions": ["sin1"],
+    "alias": ["scheduly.vercel.app"],
     "builds": [
         {
             "src": "api/index.php",
