@@ -9,7 +9,7 @@ if (isset($_SERVER['VERCEL']) || isset($_ENV['VERCEL'])) {
         'APP_DEBUG' => 'true',
         'LOG_CHANNEL' => 'stderr',
         'DB_CONNECTION' => 'pgsql',
-        'DB_HOST' => 'aws-0-ap-southeast-1.pooler.supabase.com',
+        'DB_HOST' => 'aws-1-ap-southeast-1.pooler.supabase.com',
         'DB_PORT' => '6543',
         'DB_DATABASE' => 'postgres',
         'DB_USERNAME' => 'postgres.kgdapksvpalgxxtubiwx',
