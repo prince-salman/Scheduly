@@ -543,9 +543,8 @@
     <div class="role-row">
         <label class="form-label">Pilih Role</label>
         <select class="role-select" id="roleSelect" onchange="syncRole()">
-            <option value="member">User / Member</option>
-            <option value="admin">Admin</option>
-            <option value="viewer">Viewer</option>
+            <option value="user">User / Member</option>
+            <option value="admin">Super Admin</option>
         </select>
     </div>
 
@@ -553,7 +552,7 @@
         <form action="{{ route('admin.users.approve', $user->id) }}" method="POST" style="margin:0">
             @csrf
             @method('PATCH')
-            <input type="hidden" name="role" id="roleInputHidden" value="member">
+            <input type="hidden" name="role" id="roleInputHidden" value="user">
             <button type="submit" class="btn-approve-lg">
                 Setujui Akun
             </button>
