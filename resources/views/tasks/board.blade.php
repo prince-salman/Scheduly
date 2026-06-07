@@ -1299,3 +1299,4 @@ document.getElementById('timerHistoryTotal').innerHTML =
 }
 </script>
 @endpush
+

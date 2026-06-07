@@ -32,9 +32,18 @@
 </head>
 <body>
 
-    @yield('content')
+    <main>
+        @yield('content')
+    </main>
 
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     @stack('scripts')
 </body>
