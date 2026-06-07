@@ -53,6 +53,13 @@
     .cu-error-box { background: #fef0f0; border: 1px solid #fecaca; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #b91c1c; }
     .cu-error-box strong { display: block; margin-bottom: 4px; font-size: 13.5px; }
     .cu-error-box ul { margin: 0; padding-left: 20px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+        .cu-form-card { padding: 20px; }
+        .cu-header { flex-direction: column; align-items: stretch; text-align: center; }
+        .cu-btn-back { justify-content: center; }
+    }
 </style>
 @endpush
 

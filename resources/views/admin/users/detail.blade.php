@@ -433,6 +433,21 @@
     .ts-done       { background: #d6faf5; color: #006a61; }
     .ts-inprogress { background: #ede9ff; color: #6351a7; }
     .ts-todo       { background: #f4f4f4; color: #797582; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .detail-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+        .profile-card { flex-direction: column; text-align: center; }
+        .profile-meta .status-chip-lg { margin: 10px auto; }
+        .activity-stats { grid-template-columns: 1fr; }
+        .approval-btns { flex-direction: column; align-items: stretch; }
+        .btn-approve-lg, .btn-reject-lg { justify-content: center; width: 100%; }
+        .role-select { width: 100%; }
+        .tasks-section { overflow-x: auto; }
+        .tasks-table { min-width: 600px; }
+    }
 </style>
 @endpush
 

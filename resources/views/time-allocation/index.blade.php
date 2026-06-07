@@ -102,6 +102,17 @@
 .panel-selected-title { font-size:13px; font-weight:800; color:#1c1b20; margin-bottom:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .panel-selected-total { font-size:24px; font-weight:800; color:#6351a7; margin-bottom:14px; }
 .no-hint { text-align:center; padding:20px; font-size:13px; color:#797582; }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .split-shell { grid-template-columns: 1fr; }
+    .split-right { position: static; }
+}
+@media (max-width: 640px) {
+    .alloc-header { flex-direction: column; align-items: stretch; text-align: center; }
+    .split-left-header { flex-direction: column; gap: 10px; align-items: stretch; }
+    .btn-go-board { justify-content: center; }
+}
 </style>
 @endpush
 

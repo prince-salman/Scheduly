@@ -93,6 +93,22 @@
     .btn-cancel { padding:10px 20px; border-radius:12px; border:1.5px solid #cac4d3; background:none; font-family:inherit; font-size:14px; font-weight:600; color:#797582; cursor:pointer; }
     .btn-save   { padding:10px 24px; border-radius:12px; border:none; background:#6351a7; font-family:inherit; font-size:14px; font-weight:700; color:#fff; cursor:pointer; }
     .btn-save:hover { background:#5240a0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .cal-layout { grid-template-columns: 1fr; }
+        .cal-sidebar { display: grid; grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+        .cal-page-header { flex-direction: column; align-items: stretch; }
+        .cal-view-toggles { justify-content: center; }
+        .cal-sidebar { grid-template-columns: 1fr; }
+        .week-nav { flex-direction: column; gap: 10px; text-align: center; }
+        #view-weekly .cal-main { overflow-x: auto; }
+        .week-header, .week-grid-body { min-width: 600px; }
+        .monthly-grid { overflow-x: auto; padding: 16px; }
+        .monthly-grid-head, .monthly-grid-body { min-width: 500px; }
+    }
 </style>
 @endpush
 

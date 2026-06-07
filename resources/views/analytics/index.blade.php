@@ -54,6 +54,20 @@
 
     .pagination-bar  { display:flex; align-items:center; justify-content:space-between; padding:0 24px; margin-top:4px; }
     .pagination-info { font-size:13px; color:#797582; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .analytics-stats { grid-template-columns: repeat(2, 1fr); }
+        .charts-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+        .analytics-header { flex-direction: column; align-items: stretch; }
+        .export-actions { flex-direction: column; align-items: stretch; }
+        .btn-ghost { justify-content: center; }
+        .analytics-stats { grid-template-columns: 1fr; }
+        .table-card { overflow-x: auto; }
+        table.report-table { min-width: 600px; }
+    }
 </style>
 @endpush
 

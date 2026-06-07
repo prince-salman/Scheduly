@@ -168,6 +168,15 @@
     .notif-empty-icon { font-size:56px; margin-bottom:16px; opacity:.5; }
     .notif-empty h3 { font-size:18px; font-weight:700; color:#1c1b20; margin-bottom:6px; }
     .notif-empty p  { font-size:14px; color:#797582; max-width:280px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+        .notif-header { flex-direction: column; align-items: stretch; text-align: center; }
+        .filter-chips { overflow-x: auto; padding-bottom: 8px; flex-wrap: nowrap; }
+        .filter-chip { white-space: nowrap; }
+        .notif-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+        .notif-meta { flex-direction: row; justify-content: space-between; width: 100%; align-items: center; padding-top: 8px; }
+    }
 </style>
 @endpush
 
