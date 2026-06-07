@@ -25,7 +25,7 @@ class DashboardController extends Controller
         // ── Task board preview ────────────────────────────────────
 
         $columns = [
-            'todo'        => Task::forUser($userId)->todo()->orderByRaw("FIELD(priority,'high','medium','low')")->take(5)->get(),
+            'todo'        => Task::forUser($userId)->todo()->orderByRaw("CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END")->take(5)->get(),
             'in_progress' => Task::forUser($userId)->inProgress()->latest('updated_at')->take(3)->get(),
             'done'        => Task::forUser($userId)->done()->latest('updated_at')->take(3)->get(),
         ];

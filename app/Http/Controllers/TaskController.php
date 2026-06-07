@@ -19,7 +19,7 @@ class TaskController extends Controller
         $userId = Auth::id();
 
         $columns = [
-            'todo'        => Task::forUser($userId)->todo()->orderByRaw("FIELD(priority,'high','medium','low')")->get(),
+            'todo'        => Task::forUser($userId)->todo()->orderByRaw("CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END")->get(),
             'in_progress' => Task::forUser($userId)->inProgress()->orderBy('updated_at', 'desc')->get(),
             'done'        => Task::forUser($userId)->done()->latest('updated_at')->take(10)->get(),
         ];

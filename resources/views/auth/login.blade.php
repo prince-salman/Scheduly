@@ -356,7 +356,7 @@
                     Ingat saya
                 </label>
 
-                <a href="#" class="forgot-link">Lupa password?</a>
+                <a href="{{ route('password.request') }}" class="forgot-link">Lupa password?</a>
             </div>
 
             <button type="submit" class="btn-primary-full">Login →</button>

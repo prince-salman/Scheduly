@@ -18,9 +18,9 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        // cek role admin
+        // cek role admin (dikembalikan 404 agar orang tidak tahu ini adalah route admin)
         if (auth()->user()->role !== 'admin') {
-            abort(403, 'Unauthorized Access');
+            abort(404);
         }
 
         return $next($request);

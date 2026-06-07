@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Scheduly') — Scheduly</title>
+    <title>@yield('title', 'Admin Panel') — Scheduly Admin</title>
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,11 +44,12 @@
             min-height: 100vh;
         }
 
-        /* ── Sidebar ── */
+        /* ── Sidebar (Admin Theme) ── */
         .sidebar {
             width: var(--sidebar-w);
-            background: #ffffff;
-            border-right: 1px solid var(--color-border);
+            background: #1c1b20; /* Dark sidebar for admin */
+            color: #ffffff;
+            border-right: none;
             display: flex;
             flex-direction: column;
             position: fixed;
@@ -62,15 +63,15 @@
             padding: 24px 20px 18px;
             font-size: 20px;
             font-weight: 800;
-            color: var(--color-primary);
+            color: #ffffff;
             letter-spacing: -0.4px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid var(--color-border);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .sidebar-logo span { color: var(--color-text); }
+        .sidebar-logo span { color: #b5a2ff; }
 
         .sidebar-nav {
             padding: 16px 12px;
@@ -82,7 +83,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            color: #b0aac0;
+            color: rgba(255,255,255,0.5);
             padding: 10px 8px 6px;
         }
 
@@ -94,18 +95,18 @@
             border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--color-muted);
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
             transition: background 0.15s, color 0.15s;
             position: relative;
             margin-bottom: 2px;
         }
 
-        .nav-link:hover { background: var(--color-primary-light); color: var(--color-primary); }
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
         .nav-link.active {
-            background: var(--color-primary-light);
-            color: var(--color-primary);
+            background: rgba(255,255,255,0.15);
+            color: #fff;
         }
 
         .nav-link.active::before {
@@ -147,7 +148,7 @@
         /* ── Sidebar user card ── */
         .sidebar-user {
             padding: 12px 16px;
-            border-top: 1px solid var(--color-border);
+            border-top: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -172,7 +173,7 @@
         .sidebar-user-name {
             font-size: 13px;
             font-weight: 700;
-            color: var(--color-text);
+            color: #ffffff;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -180,7 +181,7 @@
 
         .sidebar-user-role {
             font-size: 11px;
-            color: var(--color-muted);
+            color: rgba(255,255,255,0.6);
             text-transform: capitalize;
         }
 
@@ -188,7 +189,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            color: var(--color-muted);
+            color: rgba(255,255,255,0.6);
             padding: 4px;
             border-radius: 8px;
             transition: color 0.15s, background 0.15s;
@@ -250,41 +251,18 @@
         <nav class="sidebar-nav">
 
             @auth
-                {{-- User area --}}
-                <div class="nav-section-label">Menu</div>
+                <div class="nav-section-label">Admin Panel</div>
 
-                <a href="{{ route('dashboard') }}"
-                   class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    Dashboard
+                <a href="{{ route('admin.dashboard') }}"
+                   class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Admin Overview
                 </a>
 
-                <a href="{{ route('tasks.board') }}"
-                   class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    Task Board
-                </a>
-
-                <a href="{{ route('calendar.index') }}"
-                   class="nav-link {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Kalender
-                </a>
-
-                <a href="{{ route('analytics.index') }}"
-                   class="nav-link {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                    Analytics
-                </a>
-
-                <a href="{{ route('notifications.index') }}"
-                   class="nav-link {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                    Notifikasi
-                    @php $unread = \App\Models\Notification::forUser(auth()->id())->unread()->count(); @endphp
-                    @if($unread > 0)
-                        <span class="nav-badge">{{ $unread }}</span>
-                    @endif
+                <a href="{{ route('admin.users.index') }}"
+                   class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Manajemen User
                 </a>
 
 

@@ -65,11 +65,19 @@ class UserController extends Controller
         $user = Auth::user();
         $user->update(['last_login_at' => now()]);
 
-        return match ($user->status) {
-            'pending'  => redirect()->route('pending'),
-            'rejected' => redirect()->route('rejected'),
-            default    => redirect()->intended(route('dashboard')),
-        };
+        if ($user->status === 'pending') {
+            return redirect()->route('pending');
+        }
+
+        if ($user->status === 'rejected') {
+            return redirect()->route('rejected');
+        }
+
+        if ($user->isAdmin()) {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        return redirect()->intended(route('dashboard'));
     }
 
     public function pending()
