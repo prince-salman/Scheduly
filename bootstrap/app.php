@@ -21,3 +21,20 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+if (isset($_SERVER['VERCEL']) || isset($_ENV['VERCEL'])) {
+    $app->useStoragePath('/tmp/storage');
+    $directories = [
+        '/tmp/storage/framework/cache/data',
+        '/tmp/storage/framework/views',
+        '/tmp/storage/framework/sessions',
+        '/tmp/storage/logs',
+    ];
+    foreach ($directories as $dir) {
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0777, true);
+        }
+    }
+}
+
+return $app;
