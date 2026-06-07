@@ -117,6 +117,17 @@
     .cal-day.today { background:#6351a7; color:#fff; font-weight:700; }
     .cal-day.has-event::after { content:''; display:block; width:4px; height:4px; background:#006a61; border-radius:50%; margin:2px auto 0; }
     .cal-day.today.has-event::after { background:#b5a2ff; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .stat-cards { grid-template-columns: repeat(2, 1fr); }
+        .dashboard-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+        .stat-cards { grid-template-columns: 1fr; }
+        .dashboard-topbar { flex-direction: column; align-items: stretch; }
+        .dashboard-greeting h1 { font-size: 20px; }
+    }
 </style>
 @endpush
 

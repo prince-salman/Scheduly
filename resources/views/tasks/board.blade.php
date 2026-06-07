@@ -154,6 +154,18 @@
 
     /* loading spinner */
     .btn-loading { opacity:.6; pointer-events:none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .kanban-board { display: flex; overflow-x: auto; padding-bottom: 24px; scroll-snap-type: x mandatory; }
+        .kanban-col { flex: 0 0 320px; scroll-snap-align: start; }
+    }
+    @media (max-width: 640px) {
+        .board-header { flex-direction: column; align-items: stretch; }
+        .board-header-right { flex-direction: column; align-items: stretch; }
+        .board-tabs { justify-content: space-between; overflow-x: auto; }
+        .kanban-col { flex: 0 0 85vw; }
+    }
 </style>
 @endpush
 

@@ -184,6 +184,21 @@
     @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
     .um-flash { display: flex; align-items: center; gap: 10px; background: #e3faf3; border: 1px solid #a7f3d4; border-radius: 10px; padding: 11px 16px; font-size: 13.5px; color: #0a6647; font-weight: 500; margin-bottom: 20px; animation: slideDown 0.25s ease; }
     .um-flash svg { width: 16px; height: 16px; stroke: #0a6647; stroke-width: 2.5; fill: none; flex-shrink: 0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .um-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+        .um-header { flex-direction: column; align-items: stretch; }
+        .um-btn-add { justify-content: center; }
+        .um-stats { grid-template-columns: 1fr; }
+        .um-toolbar { flex-direction: column; align-items: stretch; gap: 14px; }
+        .um-tabs { overflow-x: auto; padding-bottom: 4px; }
+        .um-search-wrap { width: 100%; margin-left: 0; }
+        .um-search { width: 100%; }
+        .um-table-wrap { overflow-x: auto; }
+    }
 </style>
 @endpush
 

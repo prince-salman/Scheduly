@@ -119,6 +119,18 @@
     .page-footer { text-align: center; padding: 20px 0 4px; font-size: 12px; color: #797582; border-top: 1px solid #f0ecf8; }
     .page-footer a { color: #6351a7; text-decoration: none; font-weight: 500; }
     .footer-links { margin-top: 6px; display: flex; justify-content: center; gap: 20px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+        .stat-grid { grid-template-columns: repeat(2, 1fr); }
+        .charts-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+        .stat-grid { grid-template-columns: 1fr; }
+        .approval-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .approval-actions { width: 100%; justify-content: flex-start; }
+        .approval-meta { text-align: left; }
+    }
 </style>
 @endpush
 

@@ -230,11 +230,36 @@
         .icon-sm { width: 14px; height: 14px; display: inline-block; vertical-align: middle; }
         .icon-lg { width: 20px; height: 20px; display: inline-block; vertical-align: middle; }
         .text-primary { color: var(--color-primary); }
+
+        /* ── Responsive ── */
+        .mobile-nav {
+            display: none; align-items: center; justify-content: space-between;
+            padding: 16px 20px; background: #fff; border-bottom: 1px solid var(--color-border);
+            position: sticky; top: 0; z-index: 90; margin: -32px -36px 32px -36px;
+        }
+        .mobile-nav-logo { font-size: 18px; font-weight: 800; color: var(--color-primary); display: flex; align-items: center; gap: 8px; }
+        .mobile-nav-logo span { color: var(--color-text); }
+        .mobile-menu-btn { background: none; border: none; cursor: pointer; color: var(--color-text); padding: 4px; display: flex; align-items: center; justify-content: center; }
+
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(18,17,22,0.45); z-index: 95;
+            opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(2px);
+        }
+        .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+
+        @media (max-width: 768px) {
+            .mobile-nav { display: flex; margin: -20px -20px 20px -20px; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay { display: block; pointer-events: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
     </style>
 
     @stack('styles')
 </head>
 <body>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="app-shell">
 
     {{-- ── Sidebar ── --}}
@@ -311,6 +336,17 @@
 
     {{-- ── Main content ── --}}
     <main class="main-content">
+        <div class="mobile-nav">
+            <div class="mobile-nav-logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <div>Sched<span>uly</span></div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
 
         {{-- Flash messages --}}
         @if(session('success'))
@@ -328,7 +364,25 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        if (menuBtn && sidebar && overlay) {
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.add('open');
+                overlay.classList.add('show');
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            });
+        }
+    });
 </script>
  
 @stack('scripts')  
