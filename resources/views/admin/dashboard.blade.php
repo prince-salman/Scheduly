@@ -274,7 +274,7 @@
 </div>
 
 <footer class="page-footer">
-    &copy; {{ date('Y') }} Scheduly Productivity Platform.
+    &copy; {{ date('Y') }} Scheduly. Crafted by <a href="https://portofolio-salman.netlify.app/#guestbook" target="_blank" rel="noopener" style="text-decoration:none;color:#6351a7;font-weight:600;">salman</a> & alfihra.
     <div class="footer-links">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>

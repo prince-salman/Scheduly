@@ -514,7 +514,7 @@
 
 <!-- ===== Footer ===== -->
 <footer class="landing-footer">
-    <span>© {{ date('Y') }} Scheduly. All rights reserved.</span>
+    <span>&copy; {{ date('Y') }} Scheduly. Crafted by <a href="https://portofolio-salman.netlify.app/#guestbook" target="_blank" rel="noopener" style="text-decoration:none;color:#6351a7;font-weight:600;">salman</a> & alfihra.</span>
     <div class="footer-links">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
