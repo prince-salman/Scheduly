@@ -599,6 +599,31 @@
         </form>
     </div>
 </div>
+@elseif($user->id !== auth()->id())
+{{-- ── Change Role (For approved/active users) ── --}}
+<div class="approval-action-card" style="border-color: #ede9ff;">
+    <div class="aa-title">
+         Ubah Role Pengguna
+    </div>
+    <p class="aa-sub">Ubah hak akses pengguna ini kapan saja.</p>
+
+    <form action="{{ route('admin.users.role', $user->id) }}" method="POST">
+        @csrf
+        @method('PATCH')
+        <div class="role-row">
+            <label class="form-label">Role Akses</label>
+            <select class="role-select" name="role" required>
+                <option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User / Member</option>
+                <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Super Admin</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn-approve-lg" style="background:#6351a7; box-shadow:0 4px 14px rgba(99,81,167,.3);">
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+</div>
 @endif
 
 {{-- ── Recent Tasks by this user ── --}}
