@@ -9,10 +9,10 @@ if (isset($_SERVER['VERCEL']) || isset($_ENV['VERCEL'])) {
         'APP_DEBUG' => 'true',
         'LOG_CHANNEL' => 'stderr',
         'DB_CONNECTION' => 'pgsql',
-        'DB_HOST' => 'db.kgdapksvpalgxxtubiwx.supabase.co',
-        'DB_PORT' => '5432',
+        'DB_HOST' => 'aws-0-ap-southeast-1.pooler.supabase.com',
+        'DB_PORT' => '6543',
         'DB_DATABASE' => 'postgres',
-        'DB_USERNAME' => 'postgres',
+        'DB_USERNAME' => 'postgres.kgdapksvpalgxxtubiwx',
         'DB_PASSWORD' => '7mN*@*wNmN7mhJZ',
         'CACHE_STORE' => 'array',
         'SESSION_DRIVER' => 'cookie'
